@@ -197,90 +197,8 @@
         
         .dragonfly-section {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-        
-        .dragonfly-img {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(45deg, var(--accent), var(--primary));
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .dragonfly-img::before {
-            content: '';
-            position: absolute;
-            width: 150%;
-            height: 50%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transform: rotate(-45deg);
-            animation: shine 5s infinite linear;
-        }
-        
-        @keyframes shine {
-            0% { left: -150%; }
-            100% { left: 150%; }
-        }
-        
-        .dragonfly {
-            width: 100px;
-            height: 100px;
-            position: relative;
-            animation: float 6s ease-in-out infinite;
-        }
-        
-        .dragonfly-body {
-            width: 10px;
-            height: 60px;
-            background: linear-gradient(to bottom, #4a9cff, #1a5cb0);
-            border-radius: 5px;
-            position: absolute;
-            top: 20px;
-            left: 45px;
-        }
-        
-        .dragonfly-wing {
-            width: 40px;
-            height: 60px;
-            background: linear-gradient(to bottom, rgba(120, 220, 255, 0.7), rgba(80, 180, 255, 0.3));
-            border-radius: 50%;
-            position: absolute;
-        }
-        
-        .wing-1 {
-            top: 10px;
-            left: 5px;
-            transform: rotate(-30deg);
-        }
-        
-        .wing-2 {
-            top: 10px;
-            right: 5px;
-            transform: rotate(30deg);
-        }
-        
-        .wing-3 {
-            top: 40px;
-            left: 5px;
-            transform: rotate(-20deg);
-        }
-        
-        .wing-4 {
-            top: 40px;
-            right: 5px;
-            transform: rotate(20deg);
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
         
         .thought-section {
@@ -341,10 +259,6 @@
                 font-size: 2.5rem;
             }
             
-            .dragonfly-section {
-                grid-template-columns: 1fr;
-            }
-            
             section {
                 padding: 4rem 1rem;
             }
@@ -380,16 +294,7 @@
             <div class="container">
                 <h2>The Dragonfly Strategy</h2>
                 <div class="dragonfly-section">
-                    <div class="dragonfly-img">
-                        <div class="dragonfly">
-                            <div class="dragonfly-body"></div>
-                            <div class="dragonfly-wing wing-1"></div>
-                            <div class="dragonfly-wing wing-2"></div>
-                            <div class="dragonfly-wing wing-3"></div>
-                            <div class="dragonfly-wing wing-4"></div>
-                        </div>
-                    </div>
-                    <div>
+                    <div class="thought-card">
                         <p>Dragonflies not only intercept. They plan their path so that they appear motionless to their prey, by aligning their path with the background the prey sees.</p>
                         <p>To the prey, the dragonfly will basically just look like part of the background while slowly getting bigger and bigger. By the time the prey realizes what's going on, it's too late.</p>
                         <p>That's why they are so successful. Pretty insane stuff.</p>
