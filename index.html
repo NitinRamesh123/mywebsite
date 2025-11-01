@@ -18,7 +18,7 @@
             --accent: #0f3460;
             --highlight: #e94560;
             --text: #f1f1f1;
-        }
+        }x
         
         body {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
@@ -103,7 +103,7 @@
         
         .hero {
             background: linear-gradient(rgba(10, 10, 20, 0.7), rgba(10, 10, 20, 0.9)), 
-                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a2e"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%230f3460" stroke-width="1"/></svg>');
+                        url('data:image/svg+xml;utf8,<svg xmlns="http:www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231a1a2e"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="%230f3460" stroke-width="1"/></svg>');
             text-align: center;
             position: relative;
             overflow: hidden;
@@ -363,7 +363,7 @@
     </footer>
 
     <script>
-        // Smooth scrolling for navigation links
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -377,7 +377,7 @@
             });
         });
 
-        // Navbar background change on scroll
+    
         window.addEventListener('scroll', function() {
             const header = document.querySelector('header');
             if (window.scrollY > 100) {
@@ -387,7 +387,7 @@
             }
         });
 
-        // Add fade-in animation to sections
+       
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
