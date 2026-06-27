@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quotes — Nitin's Musings</title>
+    <style>
+        /* --- Same base styles as index --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --bg-primary: #0f0f1a;
+            --bg-secondary: #1a1a2e;
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: #f1f1f1;
+            --text-secondary: #b0b0b0;
+            --highlight: #e94560;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow-color: rgba(233, 69, 96, 0.2);
+            --header-bg: rgba(15, 15, 26, 0.95);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* --- Progress Bar --- */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--highlight), #ff7b9c);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s;
+        }
+
+        /* --- Header --- */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            background: var(--header-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.8rem 2rem;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--highlight), #ff7b9c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--highlight);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--highlight);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* --- Hamburger --- */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 28px;
+            height: 2.5px;
+            background: var(--text-primary);
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 999;
+            padding: 5rem 2rem;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .mobile-menu a {
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--highlight);
+        }
+
+        /* --- Back to Top --- */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 900;
+            background: var(--highlight);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(20px);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- Main Content --- */
+        main {
+            margin-top: 70px;
+            padding: 4rem 2rem 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 3rem 0 2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #fff, #b0b0b0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: var(--highlight);
+            text-decoration: none;
+            margin-bottom: 2rem;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .back-link:hover {
+            opacity: 0.7;
+        }
+
+        .back-link::before {
+            content: '← ';
+        }
+
+        /* --- Quote Grid --- */
+        .quote-grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .quote-item {
+            background: var(--bg-card);
+            padding: 2.2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--highlight);
+            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote-item:hover {
+            transform: translateY(-4px);
+            background: var(--bg-card-hover);
+            box-shadow: 0 8px 30px var(--shadow-color);
+        }
+
+        .quote-item .quote-text {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+            font-style: italic;
+            margin-bottom: 0.8rem;
+        }
+
+        .quote-item .quote-text::before {
+            content: '"';
+            color: var(--highlight);
+            opacity: 0.5;
+            font-size: 1.5rem;
+        }
+
+        .quote-item .quote-text::after {
+            content: '"';
+            color: var(--highlight);
+            opacity: 0.5;
+            font-size: 1.5rem;
+        }
+
+        .quote-item .quote-author {
+            color: var(--highlight);
+            font-weight: 500;
+            font-size: 0.95rem;
+            text-align: right;
+            border-top: 1px solid var(--border-color);
+            padding-top: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .quote-item .quote-author::before {
+            content: '— ';
+        }
+
+        .quote-item .quote-tag {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            background: rgba(233, 69, 96, 0.15);
+            color: var(--highlight);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-top: 0.5rem;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: var(--header-bg);
+            padding: 2rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--highlight);
+        }
+
+        .signature {
+            font-size: 1.2rem;
+            color: var(--highlight);
+            margin-top: 1rem;
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .mobile-menu.open {
+                display: flex;
+            }
+
+            main {
+                padding: 2rem 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+
+            .quote-item {
+                padding: 1.5rem;
+            }
+
+            .quote-item .quote-text {
+                font-size: 1.1rem;
+            }
+
+            .back-to-top {
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
+                right: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            .quote-item .quote-text {
+                font-size: 1rem;
+            }
+            .quote-item {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Progress Bar -->
+    <div id="progress-bar"></div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="index.html" class="logo">Nitin's Musings</a>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#dragonfly">Dragonfly</a></li>
+                <li><a href="index.html#philosophy">Philosophy</a></li>
+                <li><a href="index.html#consciousness">Consciousness</a></li>
+                <li><a href="index.html#existence">Existence</a></li>
+                <li><a href="quotes.html" class="active">Quotes</a></li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html">Home</a>
+        <a href="index.html#dragonfly">Dragonfly</a>
+        <a href="index.html#philosophy">Philosophy</a>
+        <a href="index.html#consciousness">Consciousness</a>
+        <a href="index.html#existence">Existence</a>
+        <a href="quotes.html">Quotes</a>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+
+    <main>
+        <a href="index.html" class="back-link">Back to home</a>
+
+        <div class="page-header">
+            <h1>Collected Thoughts</h1>
+            <p>Wisdom borrowed, musings collected, and words that stuck</p>
+        </div>
+
+        <div class="quote-grid">
+            <!-- Quote 1 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    There are known knowns; there are things we know we know. We also know there are known unknowns; that is to say we know there are some things we do not know. But there are also unknown unknowns—the ones we don't know we don't know.
+                </div>
+                <div class="quote-author">Donald Rumsfeld</div>
+                <span class="quote-tag">Epistemology</span>
+            </div>
+
+            <!-- Quote 2 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    Nature's strategies often reveal profound truths about perception and reality.
+                </div>
+                <div class="quote-author">Anonymous</div>
+                <span class="quote-tag">Nature</span>
+            </div>
+
+            <!-- Quote 3 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    If man had sacrificed his hands for flukes, the moral might run, he would still be a philosopher, but there would have been taken from him the devastating power to wreak his thought upon the body of the world.
+                </div>
+                <div class="quote-author">Some random guy (maybe even Sun Tzu)</div>
+                <span class="quote-tag">Philosophy</span>
+            </div>
+
+            <!-- Quote 4 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    All matter is merely energy condensed to a slow vibration. That we are all one consciousness experiencing itself subjectively.
+                </div>
+                <div class="quote-author">Maybe Sun Tzu (probably)</div>
+                <span class="quote-tag">Consciousness</span>
+            </div>
+
+            <!-- Quote 5 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    There's no such thing as death, life is only a dream, and we're the imagination of ourselves!
+                </div>
+                <div class="quote-author">Maybe Sun Tzu (probably)</div>
+                <span class="quote-tag">Existence</span>
+            </div>
+
+            <!-- Quote 6 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    Perhaps if god existed…
+                </div>
+                <div class="quote-author">Anonymous</div>
+                <span class="quote-tag">Theology</span>
+            </div>
+
+            <!-- Quote 7 -->
+            <div class="quote-item">
+                <div class="quote-text">
+                    The splendor of creation is undeniable, yet it exists alongside what appears to be gratuitous suffering.
+                </div>
+                <div class="quote-author">Anonymous</div>
+                <span class="quote-tag">Existential</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="quotes.html">Quotes</a>
+            </div>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; opacity: 0.6;">Mentally deranged</p>
+            <p class="signature">— Nitin</p>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            // --- Mobile Hamburger ---
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            hamburger.addEventListener('click', function() {
+                this.classList.toggle('active');
+                mobileMenu.classList.toggle('open');
+                document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+            });
+
+            document.querySelectorAll('.mobile-menu a').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    mobileMenu.classList.remove('open');
+                    document.body.style.overflow = '';
+                });
+            });
+
+            // --- Back to Top ---
+            const backBtn = document.getElementById('backToTop');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 400) {
+                    backBtn.classList.add('visible');
+                } else {
+                    backBtn.classList.remove('visible');
+                }
+            });
+
+            backBtn.addEventListener('click', function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // --- Scroll Progress ---
+            const progressBar = document.getElementById('progress-bar');
+
+            window.addEventListener('scroll', function() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const progress = (scrollTop / docHeight) * 100;
+                progressBar.style.width = progress + '%';
+            });
+
+            // --- Intersection Observer for fade-in ---
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.quote-item').forEach(item => {
+                item.style.opacity = 0;
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(item);
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
