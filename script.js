@@ -4,12 +4,6 @@
   // --- Unified quotes (from quotes-data.js) ---
   var quotes = window.quotesData || [];
 
-  // Sidebar tagline: show the first quote in the list
-  var sidebarQuoteEl = document.getElementById('sidebarQuote');
-  if (sidebarQuoteEl && quotes.length) {
-    sidebarQuoteEl.textContent = '"' + quotes[0].text + '"';
-  }
-
   // Projects page grid
   var projects = window.projectsData || [];
   var projectsGrid = document.getElementById('projectsGrid');
