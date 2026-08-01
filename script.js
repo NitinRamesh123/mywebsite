@@ -4,8 +4,7 @@
   // --- Unified quotes (from quotes-data.js) ---
   var quotes = window.quotesData || [];
 
-  // Sidebar tagline: always show the first quote in the list, so every
-  // page pulls from the same single source instead of its own text.
+  // Sidebar tagline: show the first quote in the list
   var sidebarQuoteEl = document.getElementById('sidebarQuote');
   if (sidebarQuoteEl && quotes.length) {
     sidebarQuoteEl.textContent = '"' + quotes[0].text + '"';
@@ -74,22 +73,23 @@
   var scrim = document.getElementById('sidebarScrim');
 
   function closeSidebar() {
-    toggle.classList.remove('active');
-    sidebar.classList.remove('open');
-    scrim.classList.remove('visible');
+    if (toggle) toggle.classList.remove('active');
+    if (sidebar) sidebar.classList.remove('open');
+    if (scrim) scrim.classList.remove('visible');
     document.body.style.overflow = '';
   }
 
   function toggleSidebar() {
+    if (!sidebar) return;
     var isOpen = sidebar.classList.toggle('open');
-    toggle.classList.toggle('active', isOpen);
-    scrim.classList.toggle('visible', isOpen);
+    if (toggle) toggle.classList.toggle('active', isOpen);
+    if (scrim) scrim.classList.toggle('visible', isOpen);
     document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
   if (toggle) {
     toggle.addEventListener('click', toggleSidebar);
-    scrim.addEventListener('click', closeSidebar);
+    if (scrim) scrim.addEventListener('click', closeSidebar);
     document.querySelectorAll('.sidebar-nav a').forEach(function (link) {
       link.addEventListener('click', closeSidebar);
     });
@@ -117,18 +117,6 @@
     });
   }
 
-  // --- Smooth scroll for in-page anchors ---
-  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-    anchor.addEventListener('click', function (e) {
-      var targetId = this.getAttribute('href');
-      var target = document.querySelector(targetId);
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
   // --- Reveal on scroll ---
   var revealItems = document.querySelectorAll('.reveal');
   if (revealItems.length) {
@@ -143,27 +131,5 @@
       { threshold: 0.12, rootMargin: '0px 0px -50px 0px' }
     );
     revealItems.forEach(function (item) { revealObserver.observe(item); });
-  }
-
-  // --- Active sidebar link on scroll (index page sections) ---
-  var sections = document.querySelectorAll('main[data-track-sections] section[id]');
-  var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
-  if (sections.length && navLinks.length) {
-    var sectionObserver = new IntersectionObserver(
-      function (entries) {
-        entries.forEach(function (entry) {
-          if (entry.isIntersecting) {
-            navLinks.forEach(function (link) {
-              link.classList.toggle(
-                'active',
-                link.getAttribute('data-section') === entry.target.id
-              );
-            });
-          }
-        });
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
-    );
-    sections.forEach(function (section) { sectionObserver.observe(section); });
   }
 })();
