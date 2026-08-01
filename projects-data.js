@@ -1,13 +1,12 @@
 /*
  * Single source of truth for the Projects page.
- * Add an object per project. Nothing here yet — fill in real ones
- * (or use the admin panel, once set up) rather than leaving it fake.
+ * Add an object per project.
  *
  * Fields:
- *   title       - project name
- *   description - a sentence or two on what it is / does
- *   tags        - array of short strings, e.g. ["Swift", "iOS"]
- *   link        - optional URL (repo, demo, etc.)
- *   date        - optional, e.g. "2026"
+ * title       - project name
+ * description - a sentence or two on what it is / does
+ * tags        - array of short strings, e.g. ["Swift", "iOS"]
+ * link        - optional URL (repo, demo, etc.)
+ * date        - optional, e.g. "2026"
  */
 window.projectsData = [];
