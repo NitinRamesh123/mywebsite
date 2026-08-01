@@ -4,6 +4,13 @@
   // --- Unified quotes (from quotes-data.js) ---
   var quotes = window.quotesData || [];
 
+  // Sidebar tagline: always show the first quote in the list, so every
+  // page pulls from the same single source instead of its own text.
+  var sidebarQuoteEl = document.getElementById('sidebarQuote');
+  if (sidebarQuoteEl && quotes.length) {
+    sidebarQuoteEl.textContent = '"' + quotes[0].text + '"';
+  }
+
   // Projects page grid
   var projects = window.projectsData || [];
   var projectsGrid = document.getElementById('projectsGrid');
@@ -111,6 +118,29 @@
     });
   }
 
+  // --- Smooth scroll for in-page anchors ---
+  document.querySelectorAll('a[href*="#"]').forEach(function (anchor) {
+    anchor.addEventListener('click', function (e) {
+      var href = this.getAttribute('href');
+      var hashIndex = href.indexOf('#');
+      if (hashIndex === -1) return;
+      var hash = href.substring(hashIndex);
+      var path = href.substring(0, hashIndex);
+      var currentPath = window.location.pathname.split('/').pop() || 'index.html';
+
+      if (!path || path === currentPath || (path === 'index.html' && (currentPath === '' || currentPath === 'index.html'))) {
+        var target = document.querySelector(hash);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (history.pushState) {
+            history.pushState(null, null, hash);
+          }
+        }
+      }
+    });
+  });
+
   // --- Reveal on scroll ---
   var revealItems = document.querySelectorAll('.reveal');
   if (revealItems.length) {
@@ -125,5 +155,27 @@
       { threshold: 0.12, rootMargin: '0px 0px -50px 0px' }
     );
     revealItems.forEach(function (item) { revealObserver.observe(item); });
+  }
+
+  // --- Active sidebar link on scroll (index page sections) ---
+  var sections = document.querySelectorAll('main[data-track-sections] section[id]');
+  var navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+  if (sections.length && navLinks.length) {
+    var sectionObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            navLinks.forEach(function (link) {
+              link.classList.toggle(
+                'active',
+                link.getAttribute('data-section') === entry.target.id
+              );
+            });
+          }
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
+    );
+    sections.forEach(function (section) { sectionObserver.observe(section); });
   }
 })();
