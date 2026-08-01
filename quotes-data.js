@@ -4,7 +4,7 @@
  * quotes.html grid and the sidebar tagline pull from here.
  *
  * Fields:
- * text        - the quote/thought itself
+ * text        - the quote or thought text
  * tag         - short category label shown on quotes.html
  * attribution - who/what it's from (optional)
  */
