@@ -1,6 +1,73 @@
 (function () {
   'use strict';
 
+  // --- Unified quotes (from quotes-data.js) ---
+  var quotes = window.quotesData || [];
+
+  // Sidebar tagline: always show the first quote in the list, so every
+  // page pulls from the same single source instead of its own text.
+  var sidebarQuoteEl = document.getElementById('sidebarQuote');
+  if (sidebarQuoteEl && quotes.length) {
+    sidebarQuoteEl.textContent = '"' + quotes[0].text + '"';
+  }
+
+  // Projects page grid
+  var projects = window.projectsData || [];
+  var projectsGrid = document.getElementById('projectsGrid');
+  if (projectsGrid) {
+    if (!projects.length) {
+      projectsGrid.innerHTML =
+        '<div class="empty-state">' +
+          '<p>No projects up yet.</p>' +
+          '<p class="empty-state-sub">Add entries to <code>projects-data.js</code> to get started.</p>' +
+        '</div>';
+    } else {
+      projectsGrid.innerHTML = projects.map(function (p) {
+        var tags = (p.tags || []).map(function (t) {
+          return '<span class="pill">' + t + '</span>';
+        }).join('');
+        var link = p.link
+          ? '<a href="' + p.link + '" class="btn-outline" style="margin-top: 1rem;" target="_blank" rel="noopener">View →</a>'
+          : '';
+        var date = p.date ? '<span class="cred-card-meta">' + p.date + '</span>' : '';
+        return (
+          '<div class="project-card">' +
+            '<div class="cred-card-top">' +
+              '<span class="cred-card-title">' + p.title + '</span>' +
+              date +
+            '</div>' +
+            '<p class="cred-card-sub">' + (p.description || '') + '</p>' +
+            (tags ? '<div class="pill-row" style="margin-top: 1rem;">' + tags + '</div>' : '') +
+            link +
+          '</div>'
+        );
+      }).join('');
+    }
+  }
+
+  // Quotes page grid
+  var quotesGrid = document.getElementById('quotesGrid');
+  if (quotesGrid) {
+    if (!quotes.length) {
+      quotesGrid.innerHTML = '<p style="color: var(--text-secondary);">No quotes yet — add some to quotes-data.js.</p>';
+    } else {
+      quotesGrid.innerHTML = quotes.map(function (q) {
+        var attribution = q.attribution
+          ? '<p class="attribution">~ ' + q.attribution + '</p>'
+          : '';
+        return (
+          '<div class="quote-card">' +
+            '<div>' +
+              '<span class="quote-tag">' + q.tag + '</span>' +
+              '<blockquote>"' + q.text + '"</blockquote>' +
+            '</div>' +
+            attribution +
+          '</div>'
+        );
+      }).join('');
+    }
+  }
+
   // --- Sidebar toggle (mobile) ---
   var toggle = document.getElementById('sidebarToggle');
   var sidebar = document.getElementById('sidebar');
