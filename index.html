@@ -1,839 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nitin's Musings</title>
-    <style>
-        /* --- Reset & Base --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --bg-primary: #0f0f1a;
-            --bg-secondary: #1a1a2e;
-            --bg-card: rgba(255, 255, 255, 0.05);
-            --bg-card-hover: rgba(255, 255, 255, 0.1);
-            --text-primary: #f1f1f1;
-            --text-secondary: #b0b0b0;
-            --highlight: #e94560;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --shadow-color: rgba(233, 69, 96, 0.2);
-            --header-bg: rgba(15, 15, 26, 0.95);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        /* --- Progress Bar --- */
-        #progress-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--highlight), #ff7b9c);
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.1s;
-        }
-
-        /* --- Header --- */
-        header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            background: var(--header-bg);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0.8rem 2rem;
-            transition: background 0.3s;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .logo {
-            font-size: 1.6rem;
-            font-weight: 700;
-            background: linear-gradient(45deg, var(--highlight), #ff7b9c);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2.5rem;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--highlight);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -4px;
-            left: 0;
-            background-color: var(--highlight);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        /* --- Hamburger --- */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.3rem;
-        }
-
-        .hamburger span {
-            display: block;
-            width: 28px;
-            height: 2.5px;
-            background: var(--text-primary);
-            border-radius: 3px;
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -6px);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            z-index: 999;
-            padding: 5rem 2rem;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2.5rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-        }
-
-        .mobile-menu.open {
-            display: flex;
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .mobile-menu a {
-            color: var(--text-primary);
-            font-size: 1.8rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .mobile-menu a:hover {
-            color: var(--highlight);
-        }
-
-        /* --- Back to Top --- */
-        .back-to-top {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            z-index: 900;
-            background: var(--highlight);
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 48px;
-            height: 48px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s, opacity 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transform: translateY(20px);
-        }
-
-        .back-to-top.visible {
-            opacity: 1;
-            pointer-events: auto;
-            transform: translateY(0);
-        }
-
-        .back-to-top:hover {
-            transform: scale(1.1);
-        }
-
-        /* --- Main Content --- */
-        main {
-            margin-top: 70px;
-        }
-
-        section {
-            padding: 5rem 2rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* --- Hero --- */
-        .hero {
-            text-align: center;
-            background: linear-gradient(180deg, rgba(15, 15, 26, 0.9), rgba(26, 26, 46, 0.95)),
-                radial-gradient(circle at 30% 40%, rgba(233, 69, 96, 0.08) 0%, transparent 60%);
-            position: relative;
-            overflow: hidden;
-            min-height: 90vh;
-        }
-
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 120%;
-            background: repeating-linear-gradient(45deg,
-                    transparent,
-                    transparent 40px,
-                    rgba(255, 255, 255, 0.015) 40px,
-                    rgba(255, 255, 255, 0.015) 41px);
-            pointer-events: none;
-            transform: translateY(0);
-            transition: transform 0.1s linear;
-        }
-
-        .hero .container {
-            position: relative;
-            z-index: 2;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 4.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(45deg, #fff, #b0b0b0);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .hero .subtitle {
-            font-size: 1.4rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            font-weight: 300;
-        }
-
-        .hero .tagline {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            opacity: 0.8;
-        }
-
-        .hero .bio {
-            background: var(--bg-card);
-            padding: 2rem;
-            border-radius: 12px;
-            border-left: 4px solid var(--highlight);
-            text-align: left;
-            margin-top: 1rem;
-        }
-
-        .hero .bio p {
-            color: var(--text-secondary);
-            font-size: 1.05rem;
-            line-height: 1.8;
-        }
-
-        /* Scroll indicator */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.3rem;
-            color: var(--text-secondary);
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
-            animation: bounce 2s infinite;
-        }
-
-        .scroll-indicator .arrow {
-            width: 18px;
-            height: 18px;
-            border-right: 2px solid var(--highlight);
-            border-bottom: 2px solid var(--highlight);
-            transform: rotate(45deg);
-            opacity: 0.6;
-        }
-
-        @keyframes bounce {
-            0%,
-            100% {
-                transform: translateX(-50%) translateY(0);
-            }
-            50% {
-                transform: translateX(-50%) translateY(8px);
-            }
-        }
-
-        /* --- Content Sections --- */
-        .content-section {
-            background: var(--bg-secondary);
-            transition: background 0.3s;
-        }
-
-        .content-section:nth-child(even) {
-            background: var(--bg-primary);
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .section-divider {
-            width: 60%;
-            height: 2px;
-            margin: 0 auto 3rem;
-            background: linear-gradient(90deg, transparent, var(--highlight), transparent);
-            opacity: 0.3;
-        }
-
-        h2 {
-            font-size: 2.6rem;
-            margin-bottom: 2rem;
-            color: var(--highlight);
-            position: relative;
-            display: inline-block;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            width: 50%;
-            height: 3px;
-            bottom: -8px;
-            left: 0;
-            background: linear-gradient(90deg, var(--highlight), transparent);
-        }
-
-        .section-intro {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 2.5rem;
-            max-width: 700px;
-        }
-
-        /* --- Thought Cards --- */
-        .thought-card {
-            background: var(--bg-card);
-            padding: 2.2rem;
-            border-radius: 12px;
-            border-left: 4px solid var(--highlight);
-            transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .thought-card:hover {
-            transform: translateY(-5px);
-            background: var(--bg-card-hover);
-            box-shadow: 0 8px 30px var(--shadow-color);
-        }
-
-        .thought-card h3 {
-            color: var(--highlight);
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .thought-card p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.8;
-        }
-
-        .thought-card p:last-child {
-            margin-bottom: 0;
-        }
-
-        .thought-card .card-quote {
-            font-style: italic;
-            color: var(--text-primary);
-            padding: 1rem 1.5rem;
-            border-left: 3px solid var(--highlight);
-            margin: 1rem 0;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 0 8px 8px 0;
-        }
-
-        /* --- Quote Teaser --- */
-        .quote-teaser {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: var(--bg-card);
-            border-radius: 12px;
-            margin-top: 2rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .quote-teaser p {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 2.2rem;
-            background: var(--highlight);
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: transform 0.3s, box-shadow 0.3s;
-            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(233, 69, 96, 0.4);
-        }
-
-        /* --- Footer --- */
-        footer {
-            background: var(--header-bg);
-            padding: 3rem 2rem;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .footer-quote {
-            font-style: italic;
-            margin-bottom: 1.5rem;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 1.5rem 0;
-        }
-
-        .footer-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: color 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .footer-links a:hover {
-            color: var(--highlight);
-        }
-
-        .signature {
-            font-size: 1.2rem;
-            color: var(--highlight);
-            margin-top: 1.5rem;
-        }
-
-        /* --- Responsive --- */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .mobile-menu.open {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 3rem;
-            }
-
-            .hero .subtitle {
-                font-size: 1.2rem;
-            }
-
-            .hero .bio {
-                padding: 1.5rem;
-            }
-
-            .hero .bio p {
-                font-size: 0.95rem;
-            }
-
-            .thought-card {
-                padding: 1.5rem;
-            }
-
-            .thought-card h3 {
-                font-size: 1.3rem;
-            }
-
-            section {
-                padding: 3rem 1rem;
-                min-height: auto;
-            }
-
-            h2 {
-                font-size: 2rem;
-            }
-
-            .back-to-top {
-                width: 44px;
-                height: 44px;
-                font-size: 1.2rem;
-                right: 1rem;
-            }
-
-            .scroll-indicator {
-                bottom: 1rem;
-                font-size: 0.6rem;
-            }
-            .scroll-indicator .arrow {
-                width: 14px;
-                height: 14px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-            .hero .subtitle {
-                font-size: 1rem;
-            }
-            .thought-card {
-                padding: 1rem;
-            }
-            .btn {
-                padding: 0.6rem 1.5rem;
-                font-size: 0.9rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nitin Ramesh — Musings & Making</title>
+<meta name="description" content="Nitin Ramesh's personal site — computational modelling, interdisciplinary science, and musings on consciousness, existence, and nature." />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <!-- Progress Bar -->
-    <div id="progress-bar"></div>
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <a href="/" class="logo">Nitin's Musings</a>
-            <ul class="nav-links">
-                <li><a href="#dragonfly">Dragonfly</a></li>
-                <li><a href="#philosophy">Philosophy</a></li>
-                <li><a href="#consciousness">Consciousness</a></li>
-                <li><a href="#existence">Existence</a></li>
-                <li><a href="quotes.html" class="active">Quotes</a></li>
-            </ul>
-            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </nav>
-    </header>
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div>
+    <a href="index.html#hero" class="brand">
+      <span class="brand-orbit">
+        <span class="brand-ring"><span class="brand-dot"></span></span>
+        <span class="brand-planet"></span>
+      </span>
+      <span class="brand-text">Nitin<small>Musings &amp; Making</small></span>
+    </a>
 
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <a href="#dragonfly">Dragonfly</a>
-        <a href="#philosophy">Philosophy</a>
-        <a href="#consciousness">Consciousness</a>
-        <a href="#existence">Existence</a>
-        <a href="quotes.html">Quotes</a>
+    <nav class="sidebar-nav">
+      <ul>
+        <li><a href="index.html#hero" data-section="hero" class="active">Home</a></li>
+        <li><a href="index.html#dragonfly" data-section="dragonfly">Dragonfly</a></li>
+        <li><a href="index.html#philosophy" data-section="philosophy">Philosophy</a></li>
+        <li><a href="index.html#consciousness" data-section="consciousness">Consciousness</a></li>
+        <li><a href="index.html#existence" data-section="existence">Existence</a></li>
+        <li><a href="index.html#credentials" data-section="credentials">Credentials</a></li>
+        <li><a href="quotes.html">Quotes</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="sidebar-bottom">
+    <p class="sidebar-quote">"Curiosity first, conclusions later."</p>
+  </div>
+</aside>
+
+<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="sidebar-scrim" id="sidebarScrim"></div>
+
+<main class="main-content" data-track-sections>
+
+  <!-- Hero -->
+  <section class="page-section hero" id="hero">
+    <div class="container">
+      <p class="kicker">Singapore · Bukit Panjang Government High School</p>
+      <h1>Nitin Ramesh</h1>
+      <p class="subtitle">thinker · wanderer · questioner</p>
+      <div class="bio">
+        <p>I'm just someone who thinks too much about dragonflies, porpoises, and the nature of reality. I like to visualise and plot graphs about a plethora of topics — mathematically modelling food webs, or building a custom Desmos simulator for the precession of planets. This is my corner of the internet where I collect those ideas. No grand agenda, just curiosity.</p>
+      </div>
+      <div class="cta-row">
+        <a href="#credentials" class="btn">View Credentials</a>
+        <a href="quotes.html" class="btn-outline">Explore Quotes</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Back to Top -->
-    <button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+  <!-- Dragonfly -->
+  <section id="dragonfly" class="page-section">
+    <div class="container reveal">
+      <span class="eyebrow">Field Notes</span>
+      <h2>Dragonfly Strategy</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">Nature's most elegant hunters reveal profound truths about perception and reality.</p>
 
-    <main>
-        <!-- Hero -->
-        <section class="hero" id="hero">
-            <div class="hero-bg" id="parallaxBg"></div>
-            <div class="container">
-                <h1>Nitin</h1>
-                <p class="subtitle">thinker · wanderer · questioner</p>
-                <p class="tagline">Exploring the edges of consciousness, existence, and the strange beauty of being</p>
-                <div class="bio">
-                    <p>I'm just someone who thinks too much about dragonflies, porpoises, and the nature of reality. This is my corner of the internet where I collect interesting ideas and share my musings. No grand agenda — just curiosity.</p>
-                </div>
-            </div>
-            <div class="scroll-indicator">
-                <span>Scroll</span>
-                <div class="arrow"></div>
-            </div>
-        </section>
+      <div class="thought-card">
+        <p>Dragonflies not only intercept. They plan their path so that they appear motionless to their prey, by aligning their path with the background the prey sees.</p>
+        <p>To the prey, the dragonfly will basically just look like part of the background while slowly getting bigger and bigger. By the time the prey realizes what's going on, it's too late.</p>
+        <p>That's why they are so successful. Pretty insane stuff.</p>
+        <div class="card-quote">"Nature's strategies often reveal profound truths about perception and reality."</div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Dragonfly -->
-        <section id="dragonfly" class="content-section">
-            <div class="container">
-                <h2>Dragonfly Strategy</h2>
-                <div class="section-divider"></div>
-                <p class="section-intro">Nature's most elegant hunters reveal profound truths about perception and reality.</p>
-                <div class="thought-card">
-                    <p>Dragonflies not only intercept. They plan their path so that they appear motionless to their prey, by aligning their path with the background the prey sees.</p>
-                    <p>To the prey, the dragonfly will basically just look like part of the background while slowly getting bigger and bigger. By the time the prey realizes what's going on, it's too late.</p>
-                    <p>That's why they are so successful. Pretty insane stuff.</p>
-                    <div class="card-quote">
-                        "Nature's strategies often reveal profound truths about perception and reality."
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Philosophy -->
+  <section id="philosophy" class="page-section">
+    <div class="container reveal">
+      <span class="eyebrow">On Being</span>
+      <h2>The Porpoise Philosopher</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">What if we had evolved differently? A meditation on hands, tools, and the cost of intelligence.</p>
 
-        <!-- Philosophy -->
-        <section id="philosophy" class="content-section">
-            <div class="container">
-                <h2>The Porpoise Philosopher</h2>
-                <div class="section-divider"></div>
-                <p class="section-intro">What if we had evolved differently? A meditation on hands, tools, and the cost of intelligence.</p>
-                <div class="thought-card">
-                    <h3>If man had sacrificed his hands for flukes…</h3>
-                    <p>…the moral might run, he would still be a philosopher, but there would have been taken from him the devastating power to wreak his thought upon the body of the world.</p>
-                    <p>Instead he would have lived and wandered like the porpoise, homeless across currents and winds and oceans, intelligent, but forever the lonely and curious observer of unknown wreckage falling through the blue light of eternity.</p>
-                    <p>This role would now be a deserved penitence for man. Perhaps such a transformation would bring him once more into that mood of childhood innocence in which he talked successfully to all things living but had no power and no urge to harm.</p>
-                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
-                        ~ Some random guy (maybe even the legendary Sun Tzu)
-                    </div>
-                </div>
-            </div>
-        </section>
+      <div class="thought-card">
+        <h3>If man had sacrificed his hands for flukes…</h3>
+        <p>…the moral might run, he would still be a philosopher, but there would have been taken from him the devastating power to wreak his thought upon the body of the world.</p>
+        <p>Instead he would have lived and wandered like the porpoise, homeless across currents and winds and oceans, intelligent, but forever the lonely and curious observer of unknown wreckage falling through the blue light of eternity.</p>
+        <p>This role would now be a deserved penitence for man. Perhaps such a transformation would bring him once more into that mood of childhood innocence in which he talked successfully to all things living but had no power and no urge to harm.</p>
+        <p class="attribution">~ Some random guy (maybe even the legendary Sun Tzu)</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- Consciousness -->
-        <section id="consciousness" class="content-section">
-            <div class="container">
-                <h2>On Consciousness & Reality</h2>
-                <div class="section-divider"></div>
-                <p class="section-intro">We are the universe experiencing itself — but what does that really mean?</p>
-                <div class="thought-card">
-                    <h3>The Nature of Existence</h3>
-                    <p>All matter is merely energy condensed to a slow vibration. That we are all one consciousness experiencing itself subjectively.</p>
-                    <p>There's no such thing as death, life is only a dream, and we're the imagination of ourselves!</p>
-                    <div style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.7;">
-                        ~ Maybe Sun Tzu (probably)
-                    </div>
-                </div>
-            </div>
-        </section>
+  <!-- Consciousness -->
+  <section id="consciousness" class="page-section">
+    <div class="container reveal">
+      <span class="eyebrow">On Mind</span>
+      <h2>On Consciousness &amp; Reality</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">We are the universe experiencing itself — but what does that really mean?</p>
 
-        <!-- Existence -->
-        <section id="existence" class="content-section">
-            <div class="container">
-                <h2>The Problem of Existence</h2>
-                <div class="section-divider"></div>
-                <p class="section-intro">Wrestling with the paradox of creation and suffering.</p>
-                <div class="thought-card">
-                    <h3>The Paradox of Creation</h3>
-                    <p>The splendor of creation is undeniable, yet it exists alongside what appears to be gratuitous suffering.</p>
-                    <p>Consider a parasite that blindly follows its nature, but in doing so, burrows into a child's eyes and causes blindness. From a human perspective, the purpose of such suffering is inscrutable.</p>
-                    <p>This creates a profound tension for faith, forcing us to wrestle with the mystery of divine providence operating in a world that includes such terrible natural evils.</p>
-                    <div class="card-quote">
-                        "Perhaps if god existed…"
-                    </div>
-                    <p style="margin-top: 1rem; opacity: 0.6;">idk what to put here.</p>
-                </div>
-            </div>
-        </section>
+      <div class="thought-card">
+        <h3>The Nature of Existence</h3>
+        <p>All matter is merely energy condensed to a slow vibration. That we are all one consciousness experiencing itself subjectively.</p>
+        <p>There's no such thing as death, life is only a dream, and we're the imagination of ourselves!</p>
+        <p class="attribution">~ Maybe Sun Tzu (probably)</p>
+      </div>
+    </div>
+  </section>
 
-        <!-- Quote Teaser -->
-        <section class="content-section" style="min-height: auto; padding: 4rem 2rem;">
-            <div class="container">
-                <div class="quote-teaser">
-                    <p style="font-size: 1.3rem; color: var(--text-primary);">💭 Collected thoughts &amp; borrowed wisdom</p>
-                    <p>Visit the quotes page for more musings on existence, consciousness, and everything in between.</p>
-                    <a href="quotes.html" class="btn">Explore Quotes →</a>
-                </div>
-            </div>
-        </section>
-    </main>
+  <!-- Existence -->
+  <section id="existence" class="page-section">
+    <div class="container reveal">
+      <span class="eyebrow">On Suffering</span>
+      <h2>The Problem of Existence</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">Wrestling with the paradox of creation and suffering.</p>
 
-    <footer>
-        <div class="footer-content">
-            <p class="footer-quote">"Thanks for reading?"</p>
-            <div class="footer-links">
-                <a href="#hero">Home</a>
-                <a href="quotes.html">Quotes</a>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 0.9rem; opacity: 0.6;">Mentally deranged</p>
-            <p class="signature">— Nitin</p>
+      <div class="thought-card">
+        <h3>The Paradox of Creation</h3>
+        <p>The splendor of creation is undeniable, yet it exists alongside what appears to be gratuitous suffering.</p>
+        <p>Consider a parasite that blindly follows its nature, but in doing so, burrows into a child's eyes and causes blindness. From a human perspective, the purpose of such suffering is inscrutable.</p>
+        <p>This creates a profound tension for faith, forcing us to wrestle with the mystery of divine providence operating in a world that includes such terrible natural evils.</p>
+        <div class="card-quote">"Perhaps if god existed…"</div>
+        <p style="margin-top: 1rem; opacity: 0.6;">idk what to put here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Credentials -->
+  <section id="credentials" class="page-section">
+    <div class="container reveal">
+      <span class="eyebrow">On Record</span>
+      <h2>Credentials</h2>
+      <div class="section-divider"></div>
+      <p class="section-intro">The formal side of the polymath thing — school, competitions, and certifications, alongside the areas I keep coming back to.</p>
+
+      <div class="cred-block">
+        <h3>Education</h3>
+        <div class="cred-card">
+          <div class="cred-card-top">
+            <span class="cred-card-title">Bukit Panjang Government High School</span>
+            <span class="cred-card-meta">Jan 2023 – Dec 2026</span>
+          </div>
+          <p class="cred-card-sub">President, Astronomy Club</p>
         </div>
-    </footer>
+      </div>
 
-    <script>
-        (function() {
-            'use strict';
+      <div class="cred-block">
+        <h3>Competitions &amp; Achievements</h3>
+        <div class="cred-grid">
+          <div class="cred-card">
+            <div class="cred-card-top">
+              <span class="cred-card-title">Singapore Junior Biology Olympiad</span>
+              <span class="cred-card-meta">2026</span>
+            </div>
+            <span class="badge">Gold</span>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-top">
+              <span class="cred-card-title">Singapore Astronomy Olympiad</span>
+              <span class="cred-card-meta">2026</span>
+            </div>
+            <span class="badge">Honourable Mention</span>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-top">
+              <span class="cred-card-title">Astrigue (Team Competition)</span>
+              <span class="cred-card-meta">2025 &amp; 2026</span>
+            </div>
+            <span class="badge">3rd Place</span>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-top">
+              <span class="cred-card-title">Astrigue (Team Competition)</span>
+              <span class="cred-card-meta">2024</span>
+            </div>
+            <span class="badge">Participation</span>
+          </div>
+        </div>
+      </div>
 
-            // --- Mobile Hamburger ---
-            const hamburger = document.getElementById('hamburger');
-            const mobileMenu = document.getElementById('mobileMenu');
+      <div class="cred-block">
+        <h3>Certifications &amp; Programmes</h3>
+        <div class="cred-card">
+          <div class="cred-card-top">
+            <span class="cred-card-title">App Development with Swift — Associate</span>
+            <span class="cred-card-meta">Issued Dec 2025 · Expires Dec 2030</span>
+          </div>
+          <p class="cred-card-sub">Apple · Credential ID ITS-49721819</p>
+        </div>
+        <div class="cred-card">
+          <div class="cred-card-top">
+            <span class="cred-card-title">Swift Accelerator Programme</span>
+            <span class="cred-card-meta">2026</span>
+          </div>
+          <p class="cred-card-sub">Graduated</p>
+        </div>
+      </div>
 
-            hamburger.addEventListener('click', function() {
-                this.classList.toggle('active');
-                mobileMenu.classList.toggle('open');
-                document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-            });
+      <div class="cred-block">
+        <h3>Certified Skills</h3>
+        <div class="pill-row">
+          <span class="pill pill-accent">Swift (Programming Language)</span>
+          <span class="pill pill-accent">iOS Development</span>
+          <span class="pill pill-accent">User Interface Design</span>
+        </div>
+      </div>
 
-            document.querySelectorAll('.mobile-menu a').forEach(link => {
-                link.addEventListener('click', function() {
-                    hamburger.classList.remove('active');
-                    mobileMenu.classList.remove('open');
-                    document.body.style.overflow = '';
-                });
-            });
+      <div class="cred-block">
+        <h3>Areas of Interest</h3>
+        <div class="pill-row">
+          <span class="pill">Computational Modelling</span>
+          <span class="pill">Interdisciplinary Science</span>
+          <span class="pill">Astrophysics</span>
+          <span class="pill">Data Visualisation</span>
+          <span class="pill">Modern Poetry</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-            // --- Back to Top ---
-            const backBtn = document.getElementById('backToTop');
+  <!-- Quote Teaser -->
+  <section class="page-section" style="min-height: auto; padding: 4.5rem 3rem;">
+    <div class="container reveal">
+      <div class="quote-teaser">
+        <p>💭 Collected thoughts &amp; borrowed wisdom</p>
+        <p>Visit the quotes page for more musings on existence, consciousness, and everything in between.</p>
+        <a href="quotes.html" class="btn">Explore Quotes →</a>
+      </div>
+    </div>
+  </section>
 
-            window.addEventListener('scroll', function() {
-                if (window.scrollY > 400) {
-                    backBtn.classList.add('visible');
-                } else {
-                    backBtn.classList.remove('visible');
-                }
-            });
+  <footer>
+    <div class="footer-content">
+      <p class="footer-quote">"Thanks for reading?"</p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="quotes.html">Quotes</a>
+      </div>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; opacity: 0.6;">Mentally deranged</p>
+      <p class="signature">— Nitin</p>
+    </div>
+  </footer>
+</main>
 
-            backBtn.addEventListener('click', function() {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
 
-            // --- Scroll Progress ---
-            const progressBar = document.getElementById('progress-bar');
-
-            window.addEventListener('scroll', function() {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const progress = (scrollTop / docHeight) * 100;
-                progressBar.style.width = progress + '%';
-            });
-
-            // --- Parallax ---
-            const parallaxBg = document.getElementById('parallaxBg');
-
-            window.addEventListener('scroll', function() {
-                const scrolled = window.scrollY;
-                const hero = document.getElementById('hero');
-                const heroHeight = hero.offsetHeight;
-                if (scrolled < heroHeight) {
-                    const offset = scrolled * 0.15;
-                    parallaxBg.style.transform = 'translateY(' + offset + 'px)';
-                }
-            });
-
-            // --- Smooth scroll for nav ---
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-
-            // --- Intersection Observer ---
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.opacity = 0;
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                observer.observe(section);
-            });
-
-        })();
-    </script>
-
+<script src="script.js"></script>
 </body>
 </html>
