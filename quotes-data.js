@@ -4,29 +4,19 @@
  * quotes.html grid and the sidebar tagline pull from here.
  *
  * Fields:
- *   text        - the quote itself
- *   tag         - short category label shown on quotes.html
- *   attribution - who/what it's from (optional)
+ * text        - the quote/thought itself
+ * tag         - short category label shown on quotes.html
+ * attribution - who/what it's from (optional)
  */
 window.quotesData = [
   {
-    text: "Nature's strategies often reveal profound truths about perception and reality.",
-    tag: "Nature",
+    text: "Dragonflies not only intercept. They plan their path so that they appear motionless to their prey, by aligning their path with the background the prey sees. To the prey, the dragonfly will basically just look like part of the background while slowly getting bigger and bigger. By the time the prey realizes what's going on, it's too late. That's why they are so successful. Pretty insane stuff.",
+    tag: "Dragonfly Strategy",
     attribution: null
   },
   {
-    text: "Perhaps if god existed…",
-    tag: "Existence",
+    text: "The splendor of creation is undeniable, yet it exists alongside what appears to be gratuitous suffering. Consider a parasite that blindly follows its nature, but in doing so, burrows into a child's eyes and causes blindness. From a human perspective, the purpose of such suffering is inscrutable. This creates a profound tension for faith, forcing us to wrestle with the mystery of divine providence operating in a world that includes such terrible natural evils.",
+    tag: "The Problem of Existence",
     attribution: null
-  },
-  {
-    text: "If man had sacrificed his hands for flukes… the moral might run, he would still be a philosopher, but there would have been taken from him the devastating power to wreak his thought upon the body of the world. Instead he would have lived and wandered like the porpoise, homeless across currents and winds and oceans, intelligent, but forever the lonely and curious observer of unknown wreckage falling through the blue light of eternity.",
-    tag: "Philosophy",
-    attribution: "Some random guy (maybe even the legendary Sun Tzu)"
-  },
-  {
-    text: "All matter is merely energy condensed to a slow vibration. That we are all one consciousness experiencing itself subjectively. There's no such thing as death, life is only a dream, and we're the imagination of ourselves!",
-    tag: "Consciousness",
-    attribution: "Maybe Sun Tzu (probably)"
   }
 ];
