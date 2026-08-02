@@ -14,7 +14,7 @@ window.projectsData = [
     title: "Desmos Planetary Precession Simulator",
     description: "An interactive mathematical simulation built in Desmos to model and visualize orbital mechanics, perihelion precession, and gravitational perturbations.",
     tags: ["Desmos", "Astrophysics", "Simulation", "Mathematics"],
-    link: "", // Paste your Desmos share link here if you want a "View →" button
+    link: "https://www.desmos.com/calculator/oueexlrj0y", 
     date: "2026"
   }
 ];
