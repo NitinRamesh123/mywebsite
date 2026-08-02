@@ -9,4 +9,12 @@
  * link        - optional URL (repo, demo, etc.)
  * date        - optional, e.g. "2026"
  */
-window.projectsData = [];
+window.projectsData = [
+  {
+    title: "Desmos Planetary Precession Simulator",
+    description: "An interactive mathematical simulation built in Desmos to model and visualize orbital mechanics, perihelion precession, and gravitational perturbations.",
+    tags: ["Desmos", "Astrophysics", "Simulation", "Mathematics"],
+    link: "", // Paste your Desmos share link here if you want a "View →" button
+    date: "2026"
+  }
+];
