@@ -23,5 +23,5 @@ window.quotesData = [
     text: "If man had sacrificed his hands for flukes… the moral might run, he would still be a philosopher, but there would have been taken from him the devastating power to wreak his thought upon the body of the world. Instead he would have lived and wandered like the porpoise, homeless across currents and winds and oceans, intelligent, but forever the lonely and curious observer of unknown wreckage falling through the blue light of eternity.",
     tag: "Philosophy",
     attribution: "Loren Eiseley"
-  }
+  },
 ];
