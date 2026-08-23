@@ -12,7 +12,7 @@
 window.projectsData = [
   {
     title: "Desmos Planetary Precession Simulator",
-    description: "An interactive mathematical simulation built in Desmos to model and visualize orbital mechanics, perihelion precession, and gravitational perturbations.",
+    description: "An interactive mathematical simulation built in Desmos to model the precession of mercury. As a bonus, it also uses a Yoshida integrator just to test the limits of Desmos.",
     tags: ["Desmos", "Astrophysics", "Simulation", "Mathematics"],
     link: "https://www.desmos.com/calculator/oueexlrj0y", 
     date: "2026"
