@@ -1,78 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Quotes — Nitin Ramesh</title>
-<meta name="description" content="Collected musings on existence, consciousness, nature, and everything in between." />
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quotes</title>
+  <meta name="description" content="you know, the equivalent of writing down pieces of text that resonate with you?" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<div id="progress-bar"></div>
+  <div id="progress-bar"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div>
-    <a href="index.html" class="brand">
-      <span class="brand-orbit">
-        <span class="brand-ring"><span class="brand-dot"></span></span>
-        <span class="brand-planet"></span>
-      </span>
-      <span class="brand-text">Nitin<small>Musings &amp; Making</small></span>
-    </a>
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <a href="index.html" class="brand">
+        <span class="brand-orbit">
+          <span class="brand-ring"><span class="brand-dot"></span></span>
+          <span class="brand-planet"></span>
+        </span>
+        <span class="brand-text">Nitin<small>Musings &amp; Making</small></span>
+      </a>
 
-    <nav class="sidebar-nav">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="credentials.html">Credentials</a></li>
-        <li><a href="projects.html">Projects</a></li>
-        <li><a href="quotes.html" class="active">Quotes</a></li>
-      </ul>
-    </nav>
-  </div>
-</aside>
-
-<button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">
-  <span></span><span></span><span></span>
-</button>
-<div class="sidebar-scrim" id="sidebarScrim"></div>
-
-<main class="main-content">
-
-  <section class="page-section" id="quotes-hero" style="min-height: 50vh;">
-    <div class="container">
-      <span class="eyebrow">Collected &amp; Borrowed</span>
-      <h2 style="font-size: 3rem;">Quotes &amp; Thoughts</h2>
-      <div class="section-divider"></div>
-      <p class="section-intro">Collected in one place instead of scattered across the site. Edit <code>quotes-data.js</code> to add, remove, or change what shows up here.</p>
+      <nav class="sidebar-nav">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="credentials.html">Credentials</a></li>
+          <li><a href="projects.html">Projects</a></li>
+          <li><a href="quotes.html" class="active">Quotes</a></li>
+        </ul>
+      </nav>
     </div>
-  </section>
+  </aside>
 
-  <section class="page-section" style="padding-top: 0;">
-    <div class="container reveal">
-      <div class="quotes-grid" id="quotesGrid">
-        </div>
-    </div>
-  </section>
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
 
-  <footer>
-    <div class="footer-content">
-      <p class="footer-quote">"Thanks for reading?"</p>
-      <div class="footer-links">
-        <a href="index.html">Home</a>
-        <a href="credentials.html">Credentials</a>
-        <a href="projects.html">Projects</a>
-        <a href="quotes.html">Quotes</a>
+  <main class="main-content">
+
+    <section class="page-section" id="quotes-hero" style="min-height: 50vh;">
+      <div class="container">
+        <h2 style="font-size: 3rem;">Quotes &amp; Thoughts</h2>
       </div>
-      <p style="color: var(--text-secondary); font-size: 0.9rem; opacity: 0.6;">Mentally deranged</p>
-      <p class="signature">— Nitin</p>
-    </div>
-  </footer>
-</main>
+    </section>
 
-<button class="back-to-top" id="backToTop" aria-label="Back to top">↑</button>
+    <section class="page-section" style="padding-top: 0;">
+      <div class="container reveal">
+        <div class="quotes-grid" id="quotesGrid">
+          <!-- Quotes will be injected here -->
+        </div>
+      </div>
+    </section>
 
-<script src="quotes-data.js"></script>
-<script src="script.js"></script>
+  </main>
+
+  <script src="quotes-data.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
